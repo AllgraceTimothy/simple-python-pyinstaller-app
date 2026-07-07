@@ -4,6 +4,9 @@ pipeline {
         image 'python:3.12'
     }
   }
+  options {
+    skipStagesAfterUnstable()
+  }
   stages {
     stage('Install dependencies') {
       steps {
@@ -29,6 +32,16 @@ pipeline {
       post {
         always {
           junit 'test-reports/results.xml' 
+        }
+      }
+    }
+    stage('Deliver') { 
+      steps {
+        sh "pyinstaller --onefile sources/add2vals.py" 
+      }
+      post {
+        success {
+          archiveArtifacts 'dist/add2vals' 
         }
       }
     }
