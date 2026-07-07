@@ -8,16 +8,6 @@ pipeline {
     skipStagesAfterUnstable()
   }
   stages {
-    stage('Install dependencies') {
-      steps {
-        sh '''
-          python3 -m venv venv
-          . venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-        '''
-      }
-    }
     stage('Build') { 
       steps {
         sh 'python3 -m py_compile sources/add2vals.py sources/calc.py' 
@@ -26,7 +16,6 @@ pipeline {
     }
     stage('Test') { 
       steps {
-        . venv/bin/activate
         sh 'pytest --junit-xml test-reports/results.xml sources/test_calc.py' 
       }
       post {
