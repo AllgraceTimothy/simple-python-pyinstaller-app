@@ -7,7 +7,7 @@ pipeline {
         stash(name: 'compiled-results', includes: 'sources/*.py*') 
       }
     }
-    stage {
+    stage('Test') {
       steps {
         sh 'pytest --junit-xml test-reports/results.xml sources/test_calc.py'
       }
